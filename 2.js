@@ -45,6 +45,7 @@ function walk (instructions){
         x: 0,
         y: 0
     };
+
     let i = 0;
     while (instructions[i] !== undefined) {
         switch (instructions[i]) {
