@@ -109,3 +109,21 @@ const human = {
 
 setTimeout((a, b) => human.say(), 2000)
 
+
+function sum (a, b, c) {
+    console.log(this)
+    return a+b+c;
+}
+
+sum.apply({}, [1, 2, 3])
+sum.bind({a: 1}, 1, 2, 3)()
+
+let obj1 = {
+    b: 1,
+    sum : sum
+}
+
+obj1.sum()
+
+
+
