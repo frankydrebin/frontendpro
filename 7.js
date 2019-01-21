@@ -87,11 +87,27 @@ arr3.length = 0
 // Обернуть все это в объект (условный API)
 
 
-
-// arr3.shift()
-// arr3
-// arr3.splice(0)
-// arr3
-
-// arr3
-
+function sortArrayAsc () {
+    console.log('sort')
+}
+const arrayUtilities = {
+    sortAsc: sortArrayAsc,
+    deepCopy: function copy (arr) {
+        let res = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (typeof arr[i] === 'object') { //this is array
+                res[i] = copy(arr[i])
+                console.log(copy)
+            } else {
+                res[i] = arr[i];
+            }
+        }
+        return res
+    }
+}
+let source = [1, 2, [3, [4]]]
+let newArray = arrayUtilities.deepCopy(source)
+source[2][0] = 55
+console.log(source[2][1][0] = 5)
+source
+newArray
