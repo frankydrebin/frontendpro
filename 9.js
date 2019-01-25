@@ -71,9 +71,15 @@ let result = pizza.ingridients.reduce(function (prev, current, i, arr){
         price : res
     }
 })
-
-result
-
-
+//
+// Создать Объект coctail следующей структуры {name: String, ingridients: [{name: String, price: Number}], isAlcohol: Boolean, type: String}
+// Поместить следующие методы в прототип: getPrice  - с помощью reduce
+// Создать Объект cocktails
+// Поместить следующие методы в прототип:
+// добавить коктейль
+// удалить коктейль по имени
+// вернуть все
+// вернуть все безаклкогольные 
+// вернуть все алкогольные
 
 
