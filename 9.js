@@ -72,7 +72,7 @@ let result = pizza.ingridients.reduce(function (prev, current, i, arr){
     }
 })
 //
-// Создать Объект coctail следующей структуры {name: String, ingridients: [{name: String, price: Number}], isAlcohol: Boolean, type: String}
+// Создать Объект cocktail следующей структуры {name: String, ingridients: [{name: String, price: Number}], isAlcohol: Boolean, type: String}
 // Поместить следующие методы в прототип: getPrice  - с помощью reduce
 // Создать Объект cocktails
 // Поместить следующие методы в прототип:
@@ -81,5 +81,48 @@ let result = pizza.ingridients.reduce(function (prev, current, i, arr){
 // вернуть все
 // вернуть все безаклкогольные 
 // вернуть все алкогольные
+const cocktailProto = {
+    getPrice: function () {
+        return this.ingredients.reduce(function (sum, ingredient) {
+            return sum+ingredient.price
+        }, 0)
+    }
+}
+function createCocktail(name, ingredients, isAlcohol, type) {
+    let obj = Object.create(cocktailProto);
+    obj.name = name;
+    obj.ingredients = ingredients;
+    obj.isAlcohol = isAlcohol;
+    obj.type = type;
+    return obj;
+}
+let margarita = createCocktail('margarita', [{name: 'tequila', price: 5},{name: 'lime', price: 3} ], true, 'long')
+console.log(margarita.getPrice())
+let oldFashioned = createCocktail('old fashioned', [{name: 'wiskey', price: 6},{name: 'bitter', price: 3} ], true, 'long')
+console.log(oldFashioned.getPrice())
 
+
+const cocktailsListProto = {
+    add: function (cocktail) {
+        this.list.push(cocktail)
+    },
+    getAll: function () {
+        return this.list
+    }
+
+}
+
+function createCoctailsList () {
+    return Object.create(cocktailsListProto, {
+        list: {
+            value: [],
+            enumerable: true,
+            writable: true,
+            configurable: true
+        }
+    });
+}
+
+const myCocktailList = createCoctailsList()
+myCocktailList.add(margarita)
 
