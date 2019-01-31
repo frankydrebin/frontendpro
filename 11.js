@@ -61,7 +61,7 @@ const showList = function () {
 }
 showButton.addEventListener('click', showList);
 
-filterInput.addEventListener('keyup', function (event) {
+filterInput.addEventListener('input', function (event) {
     listElement.innerHTML = '';
     listElement.appendChild(list.renderFiltered(this.value))
 });
