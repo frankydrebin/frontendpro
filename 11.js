@@ -1,6 +1,8 @@
 const showButton = document.getElementById('show-button');
 const filterInput = document.getElementById('filter-coctails');
 const listElement = document.getElementById('cocktail-list');
+const isAlcoholFilter = document.querySelector('#is-alcohol');
+const isLongFilter = document.querySelector('#is-long');
 
 class Cocktail {
     constructor (name, ingredients, isAlcohol, type) {
@@ -18,7 +20,18 @@ class Cocktail {
 
 class CocktailsList {
     constructor () {
-        this.list = []
+        this.list = []; // model 
+        this.filteredList = []; // view model 
+        
+        this.filters = { // view model
+            isAlcohol: true,
+            isLong: true,
+            cocktailValue: ''
+        }
+    }
+
+    setFilterValue (value, type) {
+        this.filters[type] = value;
     }
 
     add (cocktail) {
@@ -28,19 +41,23 @@ class CocktailsList {
     getAll () {
         return this.list;
     }
-    
-    renderFiltered (name) {
-        let list = this.list.filter(function (item) {
-            return item.name.indexOf(name) === 0;
-        })
-        return this.render(list);
+
+    applyFilters() {
+        this.filteredList = this.list.filter(item => {
+            return item.isAlcohol === this.filters.isAlcohol
+             && (item.type === 'long' && this.filters.isLong || item.type === 'shot' && !this.filters.isLong  )
+             && (this.filters.cocktailValue === '' || item.name.indexOf(this.filters.cocktailValue) === 0 )
+        });
+
+        
     }
+    
 
-    render(list) {
-        let cocktails = list || this.list
+    render() {
+        this.applyFilters(); // change this.list
         let fragment = document.createDocumentFragment();
-
-        cocktails.forEach(function (item) {
+        
+        this.filteredList.forEach(function (item) {
             let cocktailItem = document.createElement('div');
             cocktailItem.innerText = item.name;
             cocktailItem.className = 'cocktail';
@@ -53,15 +70,25 @@ class CocktailsList {
 
 let list = new CocktailsList();
 list.add(new Cocktail('margarita', [{name: 'tequila', price: 5},{name: 'lime', price: 3} ], true, 'long'))
-list.add(new Cocktail('old fashioned', [{name: 'wiskey', price: 6},{name: 'bitter', price: 3} ], true, 'long'))
+list.add(new Cocktail('old fashioned', [{name: 'wiskey', price: 6},{name: 'bitter', price: 3} ], true, 'shot'))
+list.add(new Cocktail('negroni', [{name: 'wiskey', price: 6},{name: 'bitter', price: 3} ], true, 'long'))
+list.add(new Cocktail('mojito', [{name: 'wiskey', price: 6},{name: 'bitter', price: 3} ], false, 'long'))
 const showList = function () {
     
     listElement.innerHTML = '';
     listElement.appendChild(list.render())
 }
-showButton.addEventListener('click', showList);
+listElement.appendChild(list.render())
+//showButton.addEventListener('click', showList);
 
-filterInput.addEventListener('input', function (event) {
+
+
+function filterHandler () {
+    let value = this.type === "checkbox" ? this.checked : this.value;
+    list.setFilterValue(value, this.name);
     listElement.innerHTML = '';
-    listElement.appendChild(list.renderFiltered(this.value))
-});
+    listElement.appendChild(list.render())
+}
+isAlcoholFilter.addEventListener('change', filterHandler);
+isLongFilter.addEventListener('change', filterHandler);
+filterInput.addEventListener('input', filterHandler);
